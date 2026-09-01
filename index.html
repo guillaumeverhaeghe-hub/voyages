@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Guillaume Verhaeghe — Expériences de bascule." />
+  <title>Guillaume Verhaeghe — Expériences de bascule</title>
+
+  <style>
+    :root{
+      --ink:#181815;
+      --paper:#f1eee6;
+      --paper-2:#e7e1d6;
+      --line:rgba(24,24,21,.18);
+      --soft:rgba(24,24,21,.62);
+      --max:1380px;
+      --pad:clamp(22px,4vw,64px);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .shell{max-width:var(--max); margin:auto; padding-left:var(--pad); padding-right:var(--pad)}
+
+    .nav{
+      position:fixed; inset:0 0 auto 0; z-index:30;
+      backdrop-filter: blur(9px);
+      background:rgba(241,238,230,.72);
+      border-bottom:1px solid transparent;
+      transition:.3s ease;
+    }
+    .nav.scrolled{border-bottom-color:var(--line)}
+    .navin{
+      height:76px; display:flex; align-items:center; justify-content:space-between;
+      max-width:var(--max); margin:auto; padding:0 var(--pad);
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+      text-transform:uppercase; letter-spacing:.08em;
+      font-size:12px; font-weight:700;
+    }
+    .mark{
+      width:27px;height:27px;border:1px solid var(--ink);border-radius:50%;
+      position:relative;
+    }
+    .mark:after{
+      content:"";position:absolute;width:7px;height:7px;border-radius:50%;
+      background:var(--ink);left:9px;top:9px;
+    }
+    .navlinks{display:flex;gap:28px;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+    .navlinks a{opacity:.65;transition:.2s}
+    .navlinks a:hover{opacity:1}
+
+    .hero{
+      min-height:100vh;
+      display:grid;
+      align-items:end;
+      position:relative;
+      border-bottom:1px solid var(--line);
+      overflow:hidden;
+    }
+    .hero-art{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 73% 28%, rgba(0,0,0,.07), transparent 18%),
+        radial-gradient(circle at 70% 62%, rgba(0,0,0,.05), transparent 28%),
+        linear-gradient(125deg, transparent 0 48%, rgba(0,0,0,.035) 48% 49%, transparent 49% 100%);
+      pointer-events:none;
+    }
+    .hero-art:before{
+      content:"";
+      position:absolute;
+      width:52vw;height:52vw;
+      border:1px solid rgba(24,24,21,.12);
+      border-radius:50%;
+      right:-7vw; top:7vh;
+    }
+    .hero-art:after{
+      content:"";
+      position:absolute;
+      width:22vw;height:22vw;
+      border:1px solid rgba(24,24,21,.18);
+      border-radius:50%;
+      right:8vw; top:22vh;
+    }
+    .hero-content{
+      position:relative; z-index:2;
+      padding-top:130px;
+      padding-bottom:clamp(52px,7vw,100px);
+    }
+    .eyebrow{
+      text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:700;
+      margin-bottom:28px;
+    }
+    h1{
+      margin:0;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size:clamp(58px,9vw,150px);
+      font-weight:400;
+      line-height:.86;
+      letter-spacing:-.045em;
+      max-width:1100px;
+    }
+    .hero-bottom{
+      margin-top:clamp(38px,6vw,85px);
+      display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:end;
+    }
+    .hero-copy{
+      max-width:670px;font-size:clamp(20px,2vw,31px);line-height:1.25;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    .hero-note{
+      font-size:13px;line-height:1.6;max-width:380px;color:var(--soft);
+      justify-self:end;
+    }
+    .scrollcue{
+      margin-top:42px;display:inline-flex;gap:12px;align-items:center;
+      font-size:11px;text-transform:uppercase;letter-spacing:.14em;
+    }
+    .scrollcue i{width:38px;height:1px;background:var(--ink);display:inline-block}
+
+    section{border-bottom:1px solid var(--line)}
+    .section{padding:clamp(78px,10vw,150px) 0}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,7vw,110px)}
+    .label{
+      text-transform:uppercase;font-size:11px;letter-spacing:.14em;font-weight:700;
+      margin-bottom:25px;
+    }
+    .display{
+      font-family:Georgia, 'Times New Roman', serif;
+      font-weight:400;letter-spacing:-.035em;
+      font-size:clamp(44px,6vw,88px);
+      line-height:.98;margin:0;
+    }
+    .lead{
+      font-family:Georgia, 'Times New Roman', serif;
+      font-size:clamp(24px,3.2vw,47px); line-height:1.13;
+      letter-spacing:-.02em;margin:0;
+    }
+    .bodycopy{
+      font-size:16px;line-height:1.75;color:var(--soft);max-width:640px;
+    }
+    .bodycopy p{margin:0 0 20px}
+
+    .manifesto{
+      background:var(--ink);color:var(--paper);
+      position:relative;overflow:hidden;
+    }
+    .manifesto .section{min-height:78vh;display:grid;align-items:center}
+    .manifesto .display{max-width:1100px}
+    .manifesto .ghost{
+      position:absolute;right:-4vw;bottom:-13vw;font-family:Georgia, serif;
+      font-size:40vw;line-height:1;color:rgba(241,238,230,.025);user-select:none;
+    }
+
+    .audience-grid{display:grid;grid-template-columns:1fr 1fr}
+    .audience-card{
+      min-height:620px;padding:clamp(42px,6vw,82px);
+      display:flex;flex-direction:column;justify-content:space-between;
+      border-right:1px solid var(--line);
+    }
+    .audience-card:last-child{border-right:0}
+    .audience-card h3{
+      font:400 clamp(38px,5vw,72px)/.98 Georgia,serif;
+      letter-spacing:-.035em;margin:0 0 30px;
+    }
+    .audience-card p{max-width:530px;font-size:16px;line-height:1.72;color:var(--soft)}
+    .mini-list{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+    .pill{
+      border:1px solid var(--line);border-radius:999px;padding:8px 11px;
+      font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+    }
+
+    .nus{
+      min-height:100vh;
+      background:
+        linear-gradient(rgba(17,17,15,.62),rgba(17,17,15,.72)),
+        radial-gradient(circle at 15% 20%, #817662 0, #554d41 24%, #312d27 52%, #171715 100%);
+      color:#f3f0e8;
+      display:grid;align-items:end;
+      position:relative;
+    }
+    .nus:after{
+      content:"";
+      position:absolute;inset:0;opacity:.18;
+      background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.03) 4px);
+      pointer-events:none;
+    }
+    .nus .section{position:relative;z-index:2;width:100%}
+    .nus .display{max-width:900px}
+    .nus-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:60px}
+    .nus p{max-width:610px;font-size:17px;line-height:1.7;color:rgba(243,240,232,.78)}
+    .nus-rules{
+      list-style:none;margin:0;padding:0;
+      font:400 clamp(30px,4vw,58px)/1.15 Georgia,serif;
+      letter-spacing:-.025em;
+    }
+    .nus-rules li{padding:13px 0;border-bottom:1px solid rgba(255,255,255,.22)}
+
+    .flow{counter-reset:flow}
+    .flow-item{
+      counter-increment:flow;
+      display:grid;grid-template-columns:110px 1fr 1fr;
+      gap:30px;padding:36px 0;border-top:1px solid var(--line);align-items:start;
+    }
+    .flow-item:before{content:"0" counter(flow);font:400 20px Georgia,serif}
+    .flow-item h4{
+      font:400 clamp(28px,3vw,44px)/1.05 Georgia,serif;margin:0;letter-spacing:-.02em
+    }
+    .flow-item p{margin:0;font-size:15px;line-height:1.7;color:var(--soft);max-width:550px}
+
+    .testimonials{background:var(--paper-2)}
+    .quote-card{padding:45px 0;border-top:1px solid var(--line)}
+    .quote-card blockquote{
+      margin:0;max-width:1100px;font:400 clamp(27px,4vw,56px)/1.15 Georgia,serif;
+      letter-spacing:-.025em
+    }
+    .quote-card footer{margin-top:22px;text-transform:uppercase;letter-spacing:.12em;font-size:11px}
+
+    .about-copy{
+      columns:2;column-gap:60px;
+      font-size:16px;line-height:1.75;color:var(--soft);
+    }
+    .about-copy p{margin-top:0;break-inside:avoid}
+
+    .contact{
+      background:var(--ink);color:var(--paper);position:relative;overflow:hidden;
+    }
+    .contact .section{min-height:78vh;display:flex;flex-direction:column;justify-content:space-between}
+    .contact .display{max-width:1000px}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end;margin-top:80px}
+    .contact-copy{font:400 clamp(22px,2.7vw,38px)/1.25 Georgia,serif;max-width:650px}
+    .contact-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+    .btn{
+      border:1px solid rgba(243,240,232,.52);
+      border-radius:999px;padding:14px 18px;
+      text-transform:uppercase;letter-spacing:.09em;font-size:11px;
+      transition:.2s;background:transparent;color:inherit;
+    }
+    .btn:hover{background:var(--paper);color:var(--ink)}
+    .footerline{
+      margin-top:90px;padding-top:24px;border-top:1px solid rgba(243,240,232,.2);
+      display:flex;justify-content:space-between;gap:20px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;opacity:.72
+    }
+
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease, transform .7s ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    @media(max-width:800px){
+      .navlinks{display:none}
+      .hero-bottom,.grid2,.nus-grid,.contact-grid{grid-template-columns:1fr}
+      .hero-note{justify-self:start}
+      .audience-grid{grid-template-columns:1fr}
+      .audience-card{min-height:auto;border-right:0;border-bottom:1px solid var(--line)}
+      .flow-item{grid-template-columns:55px 1fr}
+      .flow-item p{grid-column:2}
+      .about-copy{columns:1}
+      .contact-actions{justify-content:flex-start}
+      h1{font-size:clamp(62px,18vw,110px)}
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     ZONE FACILE À MODIFIER
+     ------------------------------------------------------------
+     TU PEUX CHANGER UNIQUEMENT LES TEXTES ENTRE LES GUILLEMETS.
+     NE TOUCHE PAS AUX NOMS À GAUCHE DES DEUX-POINTS.
+     ------------------------------------------------------------
+     EXEMPLE :
+     heroTitle: "Il y a des moments où réfléchir ne suffit plus."
+     devient
+     heroTitle: "Il faut parfois partir pour y voir clair."
+     ============================================================ -->
+
+<script>
+const CONTENT = {
+
+  /* =========================
+     IDENTITÉ
+     ========================= */
+  name: "Guillaume Verhaeghe",
+  positioning: "Expériences de bascule",
+
+  /* =========================
+     PAGE D'ACCUEIL / HERO
+     ========================= */
+  heroTitle: "Il y a des moments où réfléchir ne suffit plus.",
+  heroIntro: "Je crée et j’accompagne des voyages initiatiques et des expériences qui permettent de sortir du cadre, retrouver son centre et remettre du mouvement là où quelque chose s’est figé.",
+  heroNote: "Pour personnes en transition, associés, équipes et collectifs. À Paris, Bruxelles, ailleurs, ou là où l’expérience demande d’aller.",
+  heroLink: "Entrer dans l’expérience",
+
+  /* =========================
+     SECTION : PARTIR DANS LE RÉEL
+     ========================= */
+  approachLabel: "Le principe",
+  approachTitle: "Sortir du cadre. Retrouver le réel.",
+  approachLead: "Chaque voyage commence par quelque chose qui appelle : une question, une tension, une envie, une transition ou une intention.",
+  approachP1: "Quelque chose appelle à changer. Cela peut être une transition professionnelle, une décision importante, une perte de sens, un nouveau départ, une relation à transformer, une équipe qui cherche son centre ou simplement l’intuition qu’il est temps de bouger.",
+  approachP2: "À partir de là, nous dessinons votre voyage initiatique : une traversée que vous allez vivre pendant quelques jours, quelques semaines ou parfois quelques mois. Je suis à vos côtés à certains moments — parfois pour marcher avec vous, parfois pour préparer une étape, parfois pour vous aider à relire ce qui se présente et à laisser la suite émerger.",
+  approachP3: "Le voyage se vit dans le réel. Une découverte, une marche, une rencontre, un silence, une décision, un inconfort, une intuition ou un détour imprévu peuvent devenir les éléments mêmes de la traversée.",
+
+  /* =========================
+     PHRASE MANIFESTE
+     ========================= */
+  manifestoLabel: "Ma manière de travailler",
+  manifestoTitle: "Je ne propose pas seulement de réfléchir au changement.",
+  manifestoEmphasis: "Je propose de le vivre.",
+
+  /* =========================
+     POUR QUI ? — PARTICULIERS
+     ========================= */
+  individualLabel: "01 — Individuel",
+  individualTitle: "Personnes en transition",
+  individualText: "Vous sentez qu’un chapitre se termine sans savoir exactement comment écrire le suivant. Vous souhaitez changer de direction, retrouver confiance ou vitalité, prendre une décision ou créer un espace assez différent pour entendre ce qui cherche à émerger.",
+  individualTags: ["Transition","Décision","Confiance","Nouveau cap"],
+
+  /* =========================
+     POUR QUI ? — ÉQUIPES
+     ========================= */
+  collectiveLabel: "02 — Collectif",
+  collectiveTitle: "Associés, équipes & collectifs",
+  collectiveText: "Certaines questions ne trouvent pas leur réponse autour d’une table de réunion. Sortir du fonctionnement habituel peut permettre de retrouver ce qui relie, de parler autrement et de faire émerger une direction commune.",
+  collectiveTags: ["Relation","Vision","Confiance","Cap commun"],
+
+  /* =========================
+     NUS & PACIFIÉS
+     ========================= */
+  nusLabel: "Expérience signature",
+  nusTitleLine1: "Nus &",
+  nusTitleLine2: "Pacifiés.",
+  nusP1: "Trois à sept jours. Une intention. Très peu de choses avec nous. Pas de programme figé. Dans sa verion la plus pure, au départ, pas de téléphone, pas d’argent, pas de vêtements. C’est un peu la sensation d’un saut en parachute qui durerait plusieurs jours : l’inconnu devient continu, et le présent prend toute la place.",
+  nusP2: "Et puis quelque chose se simplifie. Quand le mental lâche un peu, il y a moins à fabriquer, moins à contrôler. Les besoins, les rencontres, les décisions et les intuitions deviennent plus lisibles. C’est cet endroit de simplicité et de fluidité que nous allons retrouver.",
+  nusP3: "Nus & Pacifiés est la forme la plus immersive de mon travail : je suis avec vous tout au long du voyage, pour traverser ensemble ce qui se présente.",
+  nusRules: [
+    "Une intention.",
+    "L’inconnu.",
+    "Le mental lâche.",
+    "Le réel reprend sa place."
+  ],
+
+  /* =========================
+     COMMENT ÇA SE PASSE ?
+     ========================= */
+  processLabel: "Comment ça se passe ?",
+  processTitle: "Un voyage à vivre, pas un programme à suivre.",
+  processIntro: "Chaque voyage est dessiné autour d’une intention. Certains durent quelques jours, d’autres plusieurs semaines ou plusieurs mois. Le cadre existe, mais il reste assez vivant pour que le réel et l’imprévu puissent aussi faire leur travail.",
+
+  process1Title: "Nommer ce qui appelle",
+  process1Text: "Un premier échange permet de comprendre le moment traversé, l’intention, les peurs, les contraintes et ce que vous aimeriez mettre en mouvement.",
+
+  process2Title: "Dessiner l’expérience",
+  process2Text: "Durée, lieu, niveau de radicalité, géographie, règles du jeu, rythme : l’expérience est conçue autour de ce qui peut être fécond pour vous ou votre groupe.",
+
+  process3Title: "Partir",
+  process3Text: "Nous quittons le cadre habituel. Je tiens le cadre, j’accompagne ce qui se présente et je veille à ce que l’expérience reste vivante et signifiante.",
+
+  process4Title: "Revenir autrement",
+  process4Text: "Nous mettons des mots sur ce qui a été vécu et sur ce que l’expérience appelle à transformer concrètement une fois de retour.",
+
+  /* =========================
+     TÉMOIGNAGES
+     ========================= */
+  testimonialsLabel: "Paroles de voyageurs",
+  testimonial1: "« Être embarquée dans l’univers du nu et culotté version Guillaume, c’est oser l’abandon à ce qui est. C’est expérimenter concrètement la foi. »",
+  testimonial1Name: "Stéphanie",
+  testimonial2: "« Guillaume est là dans un silence qui souffle la confiance. »",
+  testimonial2Name: "Stéphanie",
+  testimonial3: "« Nue et pacifiée avec Guillaume, c’est doux, initiatique et joyeux. Il vous apprendra à suivre votre cœur plutôt que votre tête. »",
+  testimonial3Name: "Nancy",
+
+  /* =========================
+     QUI SUIS-JE ?
+     ========================= */
+  aboutLabel: "Qui suis-je ?",
+  aboutTitle: "Deux chemins qui finissent par se rejoindre.",
+  aboutParagraphs: [
+    "Depuis une quinzaine d’années, mon parcours se construit à la rencontre de deux mondes.",
+    "D’un côté, celui des projets, de l’entrepreneuriat et des organisations. J’ai créé et dirigé des entreprises, accompagné des projets innovants et travaillé au sein d’organisations privées et publiques.",
+    "De l’autre, un long chemin d’exploration intérieure, de voyage, de spiritualité, de thérapie et de pratiques liées aux relations humaines.",
+    "Pendant longtemps, j’ai considéré ces deux chemins séparément. Aujourd’hui, ils se rejoignent.",
+    "Ce que j’aime profondément est de créer des espaces où les personnes peuvent sortir de leur fonctionnement habituel, se remettre en mouvement et rencontrer quelque chose de plus vivant.",
+    "Je ne prétends pas connaître à l’avance la réponse. Mon rôle est de préparer l’expérience, de tenir le cadre et d’aider à reconnaître ce qui émerge en chemin."
+  ],
+
+  /* =========================
+     FORMATS
+     ========================= */
+  formatsLabel: "Formats",
+  formatsTitle: "De quelques jours à quelques mois. Ici ou ailleurs.",
+  formatsP1: "Les voyages peuvent être individuels ou collectifs. Certains prennent la forme d’une traversée de quelques semaines ou quelques mois, ponctuée de rendez-vous, d’étapes et d’expériences. D’autres sont totalement immersifs pendant plusieurs jours.",
+  formatsP2: "Ils peuvent rester proches de chez vous ou vous emmener ailleurs. Certains sont relativement confortables. D’autres beaucoup moins.",
+  formatsP3: "Voyages individuels · couples · amis · parents/enfants · associés · équipes · collectifs",
+  formatsP4: "Chaque voyage est conçu sur mesure autour d’une intention, d’un moment de vie et d’un degré d’engagement qui vous correspond.",
+
+  /* =========================
+     CONTACT
+     ========================= */
+  contactLabel: "Premier pas",
+  contactTitleLine1: "Une intuition ?",
+  contactTitleLine2: "Parlons-en.",
+  contactText: "Si quelque chose ici vous intrigue, vous attire ou vous met légèrement mal à l’aise, cela vaut peut-être la peine d’en parler.",
+  emailText: "Écrire un email",
+  emailAddress: "guillaumeverhaeghe@gmail.com",
+  whatsappText: "WhatsApp",
+  whatsappUrl: "https://wa.me/32472323468",
+  footerLocation: "Paris, Bruxelles — ailleurs si nécessaire"
+};
+</script>
+
+<!-- ============================================================
+     À PARTIR D'ICI : DESIGN ET MISE EN PAGE
+     TU N'AS NORMALEMENT PLUS BESOIN D'Y TOUCHER.
+     ============================================================ -->
+
+<nav class="nav" id="nav">
+  <div class="navin">
+    <a class="brand" href="#top"><span class="mark"></span><span id="navName"></span></a>
+    <div class="navlinks">
+      <a href="#approche">Approche</a>
+      <a href="#pourqui">Pour qui</a>
+      <a href="#nus">Nus & Pacifiés</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero">
+    <div class="hero-art"></div>
+    <div class="shell hero-content">
+      <div class="eyebrow reveal" id="positioning"></div>
+      <h1 class="reveal" id="heroTitle"></h1>
+      <div class="hero-bottom">
+        <div>
+          <p class="hero-copy reveal" id="heroIntro"></p>
+          <a class="scrollcue reveal" href="#approche"><i></i><span id="heroLink"></span></a>
+        </div>
+        <p class="hero-note reveal" id="heroNote"></p>
+      </div>
+    </div>
+  </header>
+
+  <section id="approche">
+    <div class="shell section">
+      <div class="grid2">
+        <div>
+          <div class="label reveal" id="approachLabel"></div>
+          <h2 class="display reveal" id="approachTitle"></h2>
+        </div>
+        <div>
+          <p class="lead reveal" id="approachLead"></p>
+          <div class="bodycopy reveal" style="margin-top:38px">
+            <p id="approachP1"></p>
+            <p id="approachP2"></p>
+            <p id="approachP3"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="ghost">?</div>
+    <div class="shell section">
+      <div>
+        <div class="label reveal" id="manifestoLabel"></div>
+        <h2 class="display reveal"><span id="manifestoTitle"></span><br><em id="manifestoEmphasis"></em></h2>
+      </div>
+    </div>
+  </section>
+
+  <section id="pourqui">
+    <div class="audience-grid">
+      <article class="audience-card">
+        <div>
+          <div class="label reveal" id="individualLabel"></div>
+          <h3 class="reveal" id="individualTitle"></h3>
+          <p class="reveal" id="individualText"></p>
+        </div>
+        <div class="mini-list reveal" id="individualTags"></div>
+      </article>
+
+      <article class="audience-card">
+        <div>
+          <div class="label reveal" id="collectiveLabel"></div>
+          <h3 class="reveal" id="collectiveTitle"></h3>
+          <p class="reveal" id="collectiveText"></p>
+        </div>
+        <div class="mini-list reveal" id="collectiveTags"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="nus" id="nus">
+    <div class="shell section">
+      <div class="label reveal" id="nusLabel"></div>
+      <h2 class="display reveal"><span id="nusTitleLine1"></span><br><span id="nusTitleLine2"></span></h2>
+      <div class="nus-grid">
+        <div>
+          <p class="reveal" id="nusP1"></p>
+          <p class="reveal" id="nusP2"></p>
+          <p class="reveal"><strong id="nusP3"></strong></p>
+        </div>
+        <ul class="nus-rules reveal" id="nusRules"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shell section">
+      <div class="grid2" style="margin-bottom:65px">
+        <div>
+          <div class="label reveal" id="processLabel"></div>
+          <h2 class="display reveal" id="processTitle"></h2>
+        </div>
+        <p class="bodycopy reveal" id="processIntro"></p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-item reveal"><h4 id="process1Title"></h4><p id="process1Text"></p></div>
+        <div class="flow-item reveal"><h4 id="process2Title"></h4><p id="process2Text"></p></div>
+        <div class="flow-item reveal"><h4 id="process3Title"></h4><p id="process3Text"></p></div>
+        <div class="flow-item reveal"><h4 id="process4Title"></h4><p id="process4Text"></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="shell section">
+      <div class="label reveal" id="testimonialsLabel"></div>
+      <article class="quote-card reveal"><blockquote id="testimonial1"></blockquote><footer id="testimonial1Name"></footer></article>
+      <article class="quote-card reveal"><blockquote id="testimonial2"></blockquote><footer id="testimonial2Name"></footer></article>
+      <article class="quote-card reveal"><blockquote id="testimonial3"></blockquote><footer id="testimonial3Name"></footer></article>
+    </div>
+  </section>
+
+  <section id="qui">
+    <div class="shell section">
+      <div class="grid2">
+        <div>
+          <div class="label reveal" id="aboutLabel"></div>
+          <h2 class="display reveal" id="aboutTitle"></h2>
+        </div>
+        <div class="about-copy reveal" id="aboutParagraphs"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shell section">
+      <div class="label reveal" id="formatsLabel"></div>
+      <div class="grid2">
+        <h2 class="display reveal" id="formatsTitle"></h2>
+        <div class="bodycopy reveal">
+          <p id="formatsP1"></p>
+          <p id="formatsP2"></p>
+          <p><strong id="formatsP3"></strong></p>
+          <p id="formatsP4"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="shell section">
+      <div>
+        <div class="label reveal" id="contactLabel"></div>
+        <h2 class="display reveal"><span id="contactTitleLine1"></span><br><span id="contactTitleLine2"></span></h2>
+      </div>
+      <div>
+        <div class="contact-grid">
+          <p class="contact-copy reveal" id="contactText"></p>
+          <div class="contact-actions reveal">
+            <a class="btn" id="emailButton"></a>
+            <a class="btn" id="whatsappButton"></a>
+          </div>
+        </div>
+        <div class="footerline reveal">
+          <span id="footerName"></span>
+          <span id="footerPositioning"></span>
+          <span id="footerLocation"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  function setText(id, value){
+    const el = document.getElementById(id);
+    if(el) el.textContent = value;
+  }
+
+  const simpleKeys = [
+    "positioning","heroTitle","heroIntro","heroNote","heroLink",
+    "approachLabel","approachTitle","approachLead","approachP1","approachP2","approachP3",
+    "manifestoLabel","manifestoTitle","manifestoEmphasis",
+    "individualLabel","individualTitle","individualText",
+    "collectiveLabel","collectiveTitle","collectiveText",
+    "nusLabel","nusTitleLine1","nusTitleLine2","nusP1","nusP2","nusP3",
+    "processLabel","processTitle","processIntro",
+    "process1Title","process1Text","process2Title","process2Text",
+    "process3Title","process3Text","process4Title","process4Text",
+    "testimonialsLabel","testimonial1","testimonial1Name","testimonial2","testimonial2Name",
+    "testimonial3","testimonial3Name","aboutLabel","aboutTitle",
+    "formatsLabel","formatsTitle","formatsP1","formatsP2","formatsP3","formatsP4",
+    "contactLabel","contactTitleLine1","contactTitleLine2","contactText"
+  ];
+  simpleKeys.forEach(k=>setText(k, CONTENT[k]));
+
+  setText("navName", CONTENT.name);
+  setText("footerName", CONTENT.name);
+  setText("footerPositioning", CONTENT.positioning);
+  setText("footerLocation", CONTENT.footerLocation);
+
+  const individualTags = document.getElementById("individualTags");
+  CONTENT.individualTags.forEach(tag=>{
+    const span=document.createElement("span");
+    span.className="pill"; span.textContent=tag; individualTags.appendChild(span);
+  });
+
+  const collectiveTags = document.getElementById("collectiveTags");
+  CONTENT.collectiveTags.forEach(tag=>{
+    const span=document.createElement("span");
+    span.className="pill"; span.textContent=tag; collectiveTags.appendChild(span);
+  });
+
+  const nusRules = document.getElementById("nusRules");
+  CONTENT.nusRules.forEach(rule=>{
+    const li=document.createElement("li");
+    li.textContent=rule; nusRules.appendChild(li);
+  });
+
+  const aboutParagraphs = document.getElementById("aboutParagraphs");
+  CONTENT.aboutParagraphs.forEach(txt=>{
+    const p=document.createElement("p");
+    p.textContent=txt; aboutParagraphs.appendChild(p);
+  });
+
+  const emailButton = document.getElementById("emailButton");
+  emailButton.textContent = CONTENT.emailText;
+  emailButton.href = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(CONTENT.emailAddress);
+  emailButton.target = "_blank";
+  emailButton.rel = "noopener noreferrer";
+
+  const whatsappButton = document.getElementById("whatsappButton");
+  whatsappButton.textContent = CONTENT.whatsappText;
+  whatsappButton.href = CONTENT.whatsappUrl;
+  whatsappButton.target = "_blank";
+  whatsappButton.rel = "noopener noreferrer";
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>20));
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  },{threshold:.08});
+
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
